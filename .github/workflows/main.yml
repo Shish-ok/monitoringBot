@@ -29,14 +29,15 @@ jobs:
       - name: Build and push to dockerhub
         run: |
           ls -a
-          docker build -t shishochik/devopshomework:0.1
+          docker build -t shishochik/devopshomework:0.1 .
           docker push shishochik/devopshomework:0.1
   send-result-to-tg:
     runs-on: ubuntu-latest
     environment: Env
-    needs: docker
     steps:
-      - name: send result
+      - name: waiting
+        run: sleep 30s
+      - name: send success result
         uses: appleboy/telegram-action@master
         with:
             to: ${{secrets.TG_MY_ID}}
