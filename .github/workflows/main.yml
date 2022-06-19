@@ -22,7 +22,7 @@ jobs:
       - name: notify in telega about start
         uses: appleboy/telegram-action@master
         with:
-            to: ${{secrets.TG_MY_ID}}
+            to: 392170226
             token: ${{secrets.TG_TOKEN}}
             message: |
               ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, starting Actions...
