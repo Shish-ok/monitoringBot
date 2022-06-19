@@ -29,11 +29,11 @@ jobs:
       - name: Build and push to dockerhub
         run: |
           ls -a
-          docker build -t shishochik/devopshomework:0.1 .
+          docker build -t shishochik/devopshomework:0.1 
           docker push shishochik/devopshomework:0.1
   send-about-fail:
     runs-on: ubuntu-latest
-    environment: Evn
+    environment: Env
     needs: docker
     if: ${{failure()}}
     steps:
@@ -46,7 +46,7 @@ jobs:
               ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, fail
   send-about-success:
     runs-on: ubuntu-latest
-    environment: Evn
+    environment: Env
     needs: docker
     if: ${{success()}}
     steps:
