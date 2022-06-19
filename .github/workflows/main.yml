@@ -15,21 +15,9 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  send-to-tg:
-    runs-on: ubuntu-latest
-    environment: Env
-    steps:
-      - name: notify in telega about start
-        uses: appleboy/telegram-action@master
-        with:
-            to: ${{secrets.TG_MY_ID}}
-            token: ${{secrets.TG_TOKEN}}
-            message: |
-              ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, starting Actions...
   docker:
     runs-on: ubuntu-latest
     environment: Env
-    needs: send-to-tg
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -47,12 +35,21 @@ jobs:
     runs-on: ubuntu-latest
     environment: Env
     needs: docker
-    if: ${{ failure() }}
     steps:
       - name: send about faild result
+        if: ${{failure()}}
         uses: appleboy/telegram-action@master
         with:
             to: ${{secrets.TG_MY_ID}}
             token: ${{secrets.TG_TOKEN}}
             message: |
               ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, fail
+      - name: send about good result
+        if: ${{success()}}
+        uses: appleboy/telegram-action@master
+        with:
+            to: ${{secrets.TG_MY_ID}}
+            token: ${{secrets.TG_TOKEN}}
+            message: |
+              ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, success
+      
