@@ -43,3 +43,16 @@ jobs:
           ls -a
           docker build -t shishochik/devopshomework:0.1 .
           docker push shishochik/devopshomework:0.1
+  send-result-to-tg:
+    runs-on: ubuntu-latest
+    environment: Env
+    needs: docker
+    if: ${{ failure() }}
+    steps:
+      - name: send about faild result
+        uses: appleboy/telegram-action@master
+        with:
+            to: ${{secrets.TG_MY_ID}}
+            token: ${{secrets.TG_TOKEN}}
+            message: |
+              ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, fail
