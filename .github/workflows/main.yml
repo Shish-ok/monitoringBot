@@ -26,28 +26,17 @@ jobs:
             token: ${{secrets.TG_TOKEN}}
             message: |
               ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, starting Actions...
-
-  build:
-    # The type of runner that the job will run on
+  docker:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    environment: Env
+    needs: send-to-tg
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      
-      # Install librarys
-      - name: Run 1
-        run: sudo apt install software-properties-common -y
-      
-      # Add repository
-      - name: Run 2
-        run: sudo add-apt-repository ppa:deadsnakes/ppa -y
-      
-      # Install python 3.10
-      - name: Run 3
-        run: sudo apt install python3.10
-      
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: python3.10 main.py
+      - name: Login to docker
+        uses: docker/login-action@v2
+        with:
+          username: ${{secrets.DOCKER_NAME}}
+          password: ${{secrets.DOCKER_TOKEN}}
+      - name: Build and push to dockerhub
+        run: |
+          docker build -t shishochik/devopshomework:0.1 .
+          docker push shishochik/devopshomework:0.1
