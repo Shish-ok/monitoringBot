@@ -24,7 +24,19 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
+      
+      # Install librarys
+      - name: Run 1
+        run: sudo apt install software-properties-common -y
+      
+      # Add repository
+      - name: Run 2
+        run: sudo add-apt-repository ppa:deadsnakes/ppa -y
+      
+      # Install python 3.10
+      - name: Run 3
+        run: sudo apt install python3.10
+      
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: python3 main.py
