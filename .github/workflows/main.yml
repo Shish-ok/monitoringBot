@@ -31,6 +31,8 @@ jobs:
     environment: Env
     needs: send-to-tg
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: Login to docker
         uses: docker/login-action@v2
         with:
@@ -38,7 +40,6 @@ jobs:
           password: ${{secrets.DOCKER_TOKEN}}
       - name: Build and push to dockerhub
         run: |
-          cd ..
           ls -a
           docker build -t shishochik/devopshomework:0.1 .
           docker push shishochik/devopshomework:0.1
