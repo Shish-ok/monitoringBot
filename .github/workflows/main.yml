@@ -31,16 +31,29 @@ jobs:
           ls -a
           docker build -t shishochik/devopshomework:0.1 
           docker push shishochik/devopshomework:0.1
-  send-result-to-tg:
+  send-about-fail:
     runs-on: ubuntu-latest
-    environment: Env
+    environment: Evn
+    needs: docker
+    if: ${{failure()}}
     steps:
-      - name: waiting
-        run: sleep 30s
-      - name: send success result
+      - name: send to tg about fail
         uses: appleboy/telegram-action@master
         with:
             to: ${{secrets.TG_MY_ID}}
             token: ${{secrets.TG_TOKEN}}
             message: |
-              ${{needs.docker.result}}
+              ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, fail
+  send-about-success:
+    runs-on: ubuntu-latest
+    environment: Evn
+    needs: docker
+    if: ${{success()}}
+    steps:
+      - name: send to tg about success
+        uses: appleboy/telegram-action@master
+        with:
+            to: ${{secrets.TG_MY_ID}}
+            token: ${{secrets.TG_TOKEN}}
+            message: |
+              ${{github.actor}} create a commit ${{github.event.commits[0].message}} in ${{github.repository}}, success
