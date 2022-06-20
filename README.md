@@ -8,4 +8,4 @@ Check out `config.py` for detailed parameters explanation
 $ pip3 install -r requirements.txt
 $ python3 main.py
 ```
-Requires Python 3.9 or higher!
+Requires Python 3.9 or higher !
